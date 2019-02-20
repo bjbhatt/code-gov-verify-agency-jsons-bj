@@ -46,6 +46,8 @@ class AgencyJsonStream extends Writable {
                         "repositoryURL": releases[i].repositoryURL,
                         "orgNameDuplicateOf": {
                             "position": j,
+                            "organization": names[j].organization,
+                            "name": names[j].name,
                             "repositoryURL": names[j].repositoryURL,
                             "usageType": names[j].usageType
                         }
@@ -77,13 +79,15 @@ class AgencyJsonStream extends Writable {
                         "position": i,
                         "repositoryURL": releases[i].repositoryURL,
                         "urlDuplicateOf": {
-                            "position": j
+                            "position": j,
+                            "usageType": names[i].usageType
                         }
                     })
                 } else {
                     names.push({
                         "location": i,
-                        "repositoryURL": releases[i].repositoryURL
+                        "repositoryURL": releases[i].repositoryURL,
+                        "usageType": releases[i].usageType
                     });
                 }
             }
