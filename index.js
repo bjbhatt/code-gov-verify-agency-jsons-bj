@@ -10,7 +10,7 @@ class AgencyJsonStream extends Writable {
         });
     }
 
-    stripBom(input) {
+    _stripBom(input) {
         const inputString = input.toString();
 
         if (inputString.charCodeAt(0) === 0xFEFF) {
@@ -19,7 +19,7 @@ class AgencyJsonStream extends Writable {
         return inputString;
     }
 
-    verifyAgencyJson(agency, jsonData) {
+    _verifyAgencyJson(agency, jsonData) {
         fs.writeFileSync("./fetchData/" + agency.acronym + ".json", JSON.stringify(jsonData));
         if (jsonData.releases) {
             var releases = jsonData.releases;
@@ -27,6 +27,7 @@ class AgencyJsonStream extends Writable {
                 names = [],
                 orgNameDuplicates = [],
                 urlDuplicates = [];
+
             for (i = 0; i < releases.length; i++) {
                 var orgNameDuplicate = false;
                 var j = 0;
@@ -69,8 +70,10 @@ class AgencyJsonStream extends Writable {
                 var j = 0;
                 for (j = 0; j < names.length; j++) {
                     if (names[j].repositoryURL && releases[i].repositoryURL === names[j].repositoryURL) {
-                        urlDuplicate = true;
-                        break;
+                        if (releases[i].permissions.usageType !== "exemptByLaw" && releases[i].permissions.usageType !== "governmentWideUse") {
+                            urlDuplicate = true;
+                            break;
+                        }
                     }
                 }
                 if (urlDuplicate) {
@@ -78,16 +81,18 @@ class AgencyJsonStream extends Writable {
                     urlDuplicates.push({
                         "position": i,
                         "repositoryURL": releases[i].repositoryURL,
+                        "usageType": releases[i].permissions.usageType,
                         "urlDuplicateOf": {
                             "position": j,
-                            "usageType": names[i].usageType
+                            "repositoryURL": names[j].repositoryURL,
+                            "usageType": names[j].usageType
                         }
                     })
                 } else {
                     names.push({
                         "location": i,
                         "repositoryURL": releases[i].repositoryURL,
-                        "usageType": releases[i].usageType
+                        "usageType": releases[i].permissions.usageType
                     });
                 }
             }
@@ -124,8 +129,8 @@ class AgencyJsonStream extends Writable {
             });
             if (response && (response.status >= 200 && response.status < 300)) {
                 const responseBuffer = await response.buffer();
-                const jsonData = JSON.parse(this.stripBom(responseBuffer));
-                this.verifyAgencyJson(agency, jsonData);
+                const jsonData = JSON.parse(this._stripBom(responseBuffer));
+                this._verifyAgencyJson(agency, jsonData);
             } else {
                 const issues = {
                     "URL" : agency.codeUrl
