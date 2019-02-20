@@ -20,6 +20,7 @@ class AgencyJsonStream extends Writable {
     }
 
     verifyAgencyJson(agency, jsonData) {
+        fs.writeFileSync("./fetchData/" + agency.acronym + ".json", JSON.stringify(jsonData));
         if (jsonData.releases) {
             var releases = jsonData.releases;
             var i = 0,
@@ -91,18 +92,18 @@ class AgencyJsonStream extends Writable {
                     "count": orgNameDuplicates.length,
                     "data": orgNameDuplicates
                 });
-                fs.writeFileSync('./issues/' + agency.acronym + '-duplicateName.json', issues);
+                fs.writeFileSync("./issues/" + agency.acronym + "-duplicateName.json", issues);
             }
             if (urlDuplicates.length > 0) {
                 const issues = JSON.stringify({
                     "count": urlDuplicates.length,
                     "data": urlDuplicates
                 });
-                fs.writeFileSync('./issues/' + agency.acronym + '-duplicateURL.json', issues);
+                fs.writeFileSync("./issues/" + agency.acronym + "-duplicateURL.json", issues);
             }
         } else {
             const issues = "{ \"Error\": \"code.json file does not contain Releases entry\"}"
-            fs.writeFileSync('./issues/' + agency.acronym + '-noReleases.json', issues);
+            fs.writeFileSync("./issues/" + agency.acronym + "-noReleases.json", issues);
         }
     }
 
@@ -112,8 +113,8 @@ class AgencyJsonStream extends Writable {
         try {
             response = await fetch(agency.codeUrl, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'User-Agent': 'code.gov'
+                    "Content-Type": "application/json",
+                    "User-Agent": "code.gov"
                 },
                 timeout: 180000
             });
@@ -125,13 +126,13 @@ class AgencyJsonStream extends Writable {
                 const issues = {
                     "URL" : agency.codeUrl
                 }
-                fs.writeFileSync('./issues/' + agency.acronym + '-fetchError.json', JSON.stringify(issues));
+                fs.writeFileSync("./issues/" + agency.acronym + "-fetchError.json", JSON.stringify(issues));
             }
         } catch (error) {
             const issues = {
                 "URL" : agency.codeUrl
             }
-            fs.writeFileSync('./issues/' + agency.acronym + '-fetchError.json', JSON.stringify(issues));
+            fs.writeFileSync("./issues/" + agency.acronym + "-fetchError.json", JSON.stringify(issues));
         }
     }
 
@@ -151,10 +152,14 @@ class Verifier {
         return response.body;
     }
     async getAgencyEndPointsFile() {
-        if (fs.existsSync('./issues')) {
-            fs.removeSync('./issues');
+        if (fs.existsSync("./issues")) {
+            fs.removeSync("./issues");
         }
         fs.mkdirSync("./issues");
+        if (fs.existsSync("./fetchData")) {
+            fs.removeSync("./fetchData");
+        }
+        fs.mkdirSync("./fetchData");
         const agencyEndpointsStream = await this.getMetadata();
         const jsonStream = JSONStream.parse("*");
         const agencyJsonStream = new AgencyJsonStream();
