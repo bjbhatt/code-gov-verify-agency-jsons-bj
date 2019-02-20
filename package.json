@@ -1,0 +1,25 @@
+{
+  "name": "code-gov-verify-agency-jsons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjbhatt/code-gov-veirfy-json.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjbhatt/code-gov-veirfy-json/issues"
+  },
+  "homepage": "https://github.com/bjbhatt/code-gov-veirfy-json#readme",
+  "dependencies": {
+    "JSONStream": "^1.3.5",
+    "fs-extra": "^7.0.1",
+    "node-fetch": "^2.3.0"
+  }
+}
