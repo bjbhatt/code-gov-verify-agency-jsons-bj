@@ -4,13 +4,13 @@ const fs = require("fs-extra");
 const AgencyJsonStream = require("./lib/AgencyJsonStream");
 
 class Verifier {
-    constructor() {
-        this.REMOTE_METADATA_LOCATION = "https://raw.githubusercontent.com/GSA/code-gov-data/master/agency_metadata.json";
+    constructor(remote_metadata_location="https://raw.githubusercontent.com/GSA/code-gov-data/master/agency_metadata.json") {
+        this.remove_metadata_location = remote_metadata_location;
     }
     async getMetadata() {
         let response;
         console.log("Fetching master agency metadata...")
-        response = await fetch(this.REMOTE_METADATA_LOCATION, {
+        response = await fetch(this.remove_metadata_location, {
             headers: {
                 "Content-Type": "application/json",
                 "User-Agent": "code.gov"
