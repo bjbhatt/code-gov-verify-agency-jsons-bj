@@ -2,22 +2,28 @@ const fetch = require("node-fetch");
 const JSONStream = require("JSONStream");
 const fs = require("fs-extra");
 const AgencyJsonStream = require("./lib/AgencyJsonStream");
+const getConfig = require("./config");
 
 class Verifier {
-    constructor(remote_metadata_location="https://raw.githubusercontent.com/GSA/code-gov-data/master/agency_metadata.json") {
-        this.remove_metadata_location = remote_metadata_location;
+    constructor() {
+        this.config = getConfig();    
     }
     async getMetadata() {
         let response;
-        console.log("Fetching master agency metadata...")
-        response = await fetch(this.remove_metadata_location, {
-            headers: {
-                "Content-Type": "application/json",
-                "User-Agent": "code.gov"
-            },
-            timeout: 30000
-        });
-        return response.body;
+        if (this.config && this.config.GET_REMOTE_METADATA) {
+            console.log("Fetching remote metadata for agencies...");
+            response = await fetch(this.config.REMOTE_METADATA_LOCATION, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "User-Agent": "code.gov"
+                },
+                timeout: 30000
+            });
+            return response.body;
+        }
+
+        console.log("Using local metadata for agencies...");
+        return fs.createReadStream(this.config.LOCAL_METADATA_LOCATION);
     }
 
     async getAgencyEndPointsFile(verifyURL=false) {
@@ -31,7 +37,7 @@ class Verifier {
         fs.mkdirSync("./fetchData");
         const agencyEndpointsStream = await this.getMetadata();
         const jsonStream = JSONStream.parse("*");
-        const agencyJsonStream = new AgencyJsonStream(verifyURL);
+        const agencyJsonStream = new AgencyJsonStream(this.config, verifyURL);
         return new Promise((fulfill, reject) => {
             agencyEndpointsStream
                 .pipe(jsonStream)
