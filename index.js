@@ -8,11 +8,12 @@ class Verifier {
     constructor() {
         this.config = getConfig();    
     }
-    async getMetadata() {
+    
+    async getMetadata(config) {
         let response;
-        if (this.config && this.config.GET_REMOTE_METADATA) {
+        if (config && config.GET_REMOTE_METADATA) {
             console.log("Fetching remote metadata for agencies...");
-            response = await fetch(this.config.REMOTE_METADATA_LOCATION, {
+            response = await fetch(config.REMOTE_METADATA_LOCATION, {
                 headers: {
                     "Content-Type": "application/json",
                     "User-Agent": "code.gov"
@@ -23,7 +24,7 @@ class Verifier {
         }
 
         console.log("Using local metadata for agencies...");
-        return fs.createReadStream(this.config.LOCAL_METADATA_LOCATION);
+        return fs.createReadStream(config.LOCAL_METADATA_LOCATION);
     }
 
     async getAgencyEndPointsFile(verifyURL=false) {
@@ -35,7 +36,7 @@ class Verifier {
             fs.removeSync("./fetchData");
         }
         fs.mkdirSync("./fetchData");
-        const agencyEndpointsStream = await this.getMetadata();
+        const agencyEndpointsStream = await this.getMetadata(this.config);
         const jsonStream = JSONStream.parse("*");
         const agencyJsonStream = new AgencyJsonStream(this.config, verifyURL);
         return new Promise((fulfill, reject) => {
