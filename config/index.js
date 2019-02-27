@@ -19,7 +19,8 @@ function getConfig() {
         ],
         REMOTE_METADATA_LOCATION: "https://raw.githubusercontent.com/GSA/code-gov-data/master/agency_metadata.json",
         LOCAL_METADATA_LOCATION: "./config/agency_metadata.json",
-        GET_REMOTE_METADATA: false
+        GET_REMOTE_METADATA: true,
+        INCLUDE_USAGE_TYPE_FOR_NAME_DUPS: true
     };
 
     return config;
