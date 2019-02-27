@@ -59,7 +59,7 @@ class Verifier {
 }
 
 if (require.main === module) {
-    var verifyURL = (process.argv.length > 2 && process.argv[2].toLowerCase() === "true");
+    let verifyURL = (process.argv.length > 2 && process.argv[2].toLowerCase() === "true");
     let verifier = new Verifier();
     verifier.getAgencyEndPointsFile(verifyURL);
 }
