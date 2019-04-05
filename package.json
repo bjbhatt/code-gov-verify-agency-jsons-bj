@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "start-verify-url": "node ./index.js true"
+    "start-verify-url": "node ./index.js true",
+    "email-test": "node ./email-test.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "dependencies": {
     "JSONStream": "^1.3.5",
     "fs-extra": "^7.0.1",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "nodemailer": "^6.0.0"
   }
 }
