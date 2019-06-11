@@ -1,8 +1,8 @@
 const fetch = require("node-fetch");
 const JSONStream = require("JSONStream");
-const fs = require("fs-extra");
 const AgencyJsonStream = require("./lib/AgencyJsonStream");
 const getConfig = require("./config");
+const fsCalls = require("./lib/fsCalls");
 
 class Verifier {
     constructor() {
@@ -24,18 +24,12 @@ class Verifier {
         }
 
         console.log("Using local metadata for agencies...");
-        return fs.createReadStream(config.LOCAL_METADATA_LOCATION);
+        return fsCalls.createReadStream(config.LOCAL_METADATA_LOCATION);
     }
 
     async getAgencyEndPointsFile(verifyURL=false) {
-        if (fs.existsSync("./issues")) {
-            fs.removeSync("./issues");
-        }
-        fs.mkdirSync("./issues");
-        if (fs.existsSync("./fetchData")) {
-            fs.removeSync("./fetchData");
-        }
-        fs.mkdirSync("./fetchData");
+        fsCalls.createFolder('./issues', true);
+        fsCalls.createFolder("./fetchData", true);
         const agencyEndpointsStream = await this.getMetadata(this.config);
         const jsonStream = JSONStream.parse("*");
         const agencyJsonStream = new AgencyJsonStream(this.config, verifyURL);

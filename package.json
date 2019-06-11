@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "start-verify-url": "node ./index.js true"
+    "start-verify-url": "node ./index.js true",
+    "summary": "node ./summary.js"
   },
   "repository": {
     "type": "git",

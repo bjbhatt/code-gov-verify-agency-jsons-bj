@@ -17,11 +17,14 @@ function getConfig() {
             "exemptByCIO", 
             "exemptByPolicyDate"
         ],
+        SOURCE_CONTROL_TYPES: ['github.com', 'bitbucket.org'],
         REMOTE_METADATA_LOCATION: "https://raw.githubusercontent.com/GSA/code-gov-data/master/agency_metadata.json",
         LOCAL_METADATA_LOCATION: "./config/agency_metadata.json",
         GET_REMOTE_METADATA: true,
         INCLUDE_USAGE_TYPE_FOR_NAME_DUPS: true,
-        URL_FETCH_TIMEOUT: 5000
+        URL_FETCH_TIMEOUT: 5000,
+        CODE_GOV_API_PATH: "https://api.code.gov",
+        CODE_GOV_API_KEY: "zl8yxGEzlpJNBrzpHKtVqnfvM78fDccbZTm2BbsM"
     };
 
     return config;
