@@ -24,7 +24,7 @@ function getConfig() {
         INCLUDE_USAGE_TYPE_FOR_NAME_DUPS: true,
         URL_FETCH_TIMEOUT: 5000,
         CODE_GOV_API_PATH: "https://api.code.gov",
-        CODE_GOV_API_KEY: "zl8yxGEzlpJNBrzpHKtVqnfvM78fDccbZTm2BbsM"
+        CODE_GOV_API_KEY: "_YOUR_KEY_"
     };
 
     return config;
