@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./index.js",
     "start-verify-url": "node ./index.js true",
-    "summary": "node ./summary.js"
+    "summary": "node ./summary.js",
+    "github-repos-stats": "node ./github-repos-stats.js"
   },
   "repository": {
     "type": "git",

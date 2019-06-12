@@ -16,8 +16,9 @@ class Summary {
     }
 
     async agencySummary() {
-        console.log('Retrieving status...');
         let agenciesStatuses = [];
+
+        console.log('Retrieving status...');
         let data = await apiCalls.getStatus(this.config);
         console.log('Processing status...');
         if (data.statuses) {
@@ -58,11 +59,12 @@ class Summary {
     }
 
     async repoSummary() {
-        console.log('Retrieving Repos...');
         let sourceControlTypeCounts = { };
         let usageTypeCounts = { };
         let regExps = this.config.SOURCE_CONTROL_TYPES.map((sourceControlType, i) => { return { sourceControlType, exp: new RegExp(sourceControlType) } });
         let usageTypes = [...this.config.OPEN_SOURCE_USAGE_TYPES, ...this.config.GOVERNMENT_WIDE_USAGE_TYPES, ...this.config.EXEMPT_USAGE_TYPES];
+
+        console.log('Retrieving Repos...');
         let repos = await apiCalls.getRepos(this.config);
         console.log('Processing Repos...');
         repos.forEach( (repo, index) => {
@@ -92,7 +94,7 @@ class Summary {
     }
 
     async generateSummary() {
-        fsCalls.createFolder('./summary', true);
+        fsCalls.createFolder('./summary');
         await this.agencySummary();
         await this.repoSummary();
     }

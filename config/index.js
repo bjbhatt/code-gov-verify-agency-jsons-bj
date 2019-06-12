@@ -24,7 +24,11 @@ function getConfig() {
         INCLUDE_USAGE_TYPE_FOR_NAME_DUPS: true,
         URL_FETCH_TIMEOUT: 5000,
         CODE_GOV_API_PATH: "https://api.code.gov",
-        CODE_GOV_API_KEY: "_YOUR_KEY_"
+        CODE_GOV_API_KEY: "_YOUR_KEY_",
+        GITHUB_API_PATH: "https://api.github.com",
+        GITHUB_TOKEN: "_YOUR_GITHUB_TOKEN_",
+        GITHUB_START_FROM: 0,
+        GITHUB_MAX_REPOS: 5
     };
 
     return config;
